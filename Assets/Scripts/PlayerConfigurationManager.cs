@@ -46,6 +46,7 @@ public class PlayerConfigurationManager : MonoBehaviour
         }
     }
 
+    //HandlePlayerJoin is called by the PlayerInputManager component whenever a new input is detected.
     public void HandlePlayerJoin(PlayerInput pi)
     {
         Debug.Log("Player Joined " + pi.playerIndex);

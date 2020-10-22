@@ -35,6 +35,8 @@ public class PlayerSetupMenuController : MonoBehaviour
         }
     }
 
+    //Currently the game only has one player sprite,
+    //this method will be updated so that a player can choose a "skin".
     public void SelectSprite(/*Sprite sp*/)
     {
         if(!inputEnabled) { return; }

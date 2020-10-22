@@ -7,6 +7,10 @@ using UnityEngine.UI;
 
 public class GameplayUIController : MonoBehaviour
 {
+    /* 
+        I'm currently in the process of moving most of the code from the LevelController script to here
+        so that LevelController will only have to manage player and game states
+    */
     private int winningPlayerIndex;
 
     private PlayerConfiguration[] playerConfigs;
@@ -49,14 +53,12 @@ public class GameplayUIController : MonoBehaviour
 
     public void LeaveGame()
     {
-        Destroy(PlayerConfigurationManager.Instance);
         SceneManager.LoadScene(0);
     }
 
-
     IEnumerator EndGame()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
         yesButton.interactable = true;
         noButton.interactable = true;
         yesButton.Select();

@@ -12,15 +12,15 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector2 moveDirection;
 
-    Player _player;
+    Player player;
     Rigidbody2D rb;
-    SpriteRenderer _sprite;
+    SpriteRenderer sprite;
 
     private void OnEnable()
     {
-        _player = GetComponent<Player>();
+        player = GetComponent<Player>();
         rb = GetComponent<Rigidbody2D>();
-        _sprite = GetComponent<SpriteRenderer>();
+        sprite = GetComponent<SpriteRenderer>();
     }
 
     private void FixedUpdate()
@@ -28,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
         Move(moveDirection);
     }
 
+    //Called by the PlayerInputHandler script
     public void SetMovement(Vector2 direction)
     {
         moveDirection = direction;
@@ -50,20 +51,21 @@ public class PlayerMovement : MonoBehaviour
             direction.y *= -1;
         }
 
-        if (_player.isGrounded)
+        if (player.isGrounded)
         {
             rb.AddForce(direction);
-            _player.isGrounded = false;
+            player.isGrounded = false;
         }
     }
 
+    //Checks for enemies in the new location, inverts velocity, gravity, and player color.
     public void Flip()
     {
         Vector2 v = new Vector2(1, -1);
 
         if (Time.time >= nextFlip)
         {
-            _player.EnemyCheck(transform.position * v);
+            player.EnemyCheck(transform.position * v);
 
             transform.position *= v;
             rb.velocity *= v;
@@ -72,11 +74,11 @@ public class PlayerMovement : MonoBehaviour
 
             if (isFlipped)
             {
-                _sprite.color = Color.black;
+                sprite.color = Color.black;
             }
             else
             {
-                _sprite.color = Color.white;
+                sprite.color = Color.white;
             }
 
             isFlipped = !isFlipped;

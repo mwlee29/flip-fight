@@ -9,6 +9,10 @@ using UnityEngineInternal;
 
 public class LevelController : MonoBehaviour
 {
+    /* 
+        I'm currently in the process of moving most of the code from the LevelController script to
+        GameplayUIController so that LevelController will only have to manage player and game states
+    */
     [SerializeField]
     private int MaxScore = 7;
 
@@ -24,11 +28,6 @@ public class LevelController : MonoBehaviour
     [SerializeField]
     private GameObject gameOverPanel;
 
-    [SerializeField]
-    private Button yesButton;
-    [SerializeField]
-    private Button noButton;
-
     private PlayerConfiguration[] playerConfigs;
 
     void Start()
@@ -37,42 +36,29 @@ public class LevelController : MonoBehaviour
         for (int i = 0; i < playerConfigs.Length; i++)
         {
             var player = Instantiate(playerPrefab, playerSpawns[i].position, playerSpawns[i].rotation, gameObject.transform);
-            StartCoroutine(StartGame(i, player));
             player.GetComponent<Player>().InitializePlayer(playerConfigs[i]);
             playerScoreText[i].SetText(playerConfigs[i].PlayerScore.ToString());
         }
 
     }
 
-    public void ResetLevel(int playerIndex)
+    //Update Scores, reload the level
+    public void ResetLevel(PlayerConfiguration player)
     {
-        var player = playerConfigs[playerIndex];
         player.PlayerScore += 1;
 
         if (player.PlayerScore >= MaxScore)
-            EndGame(playerIndex);
+            EndGame(player.PlayerIndex);
         else
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 
-
     private void EndGame(int playerIndex)
     {
         winningPlayerText.SetText("Player " + (playerIndex + 1) + " Wins!!!!");
         gameOverPanel.SetActive(true);
-        StartCoroutine(EndGame());
-    }
-
-    public void PlayAgain()
-    {
-        foreach (PlayerConfiguration p in playerConfigs)
-        {
-            p.PlayerScore = 0;
-        }
-
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void LeaveGame()
@@ -81,19 +67,5 @@ public class LevelController : MonoBehaviour
         //Destroy(FindObjectOfType<PlayerConfigurationManager>());
         SceneManager.LoadSceneAsync(0);
         Debug.Log("Error loading scene??");
-    }
-
-    IEnumerator StartGame(int i, GameObject player)
-    {
-        yield return new WaitForSeconds(1.5f);
-        player.GetComponent<PlayerInputHandler>().InitializePlayer(playerConfigs[i]);
-    }
-
-    IEnumerator EndGame()
-    {
-        yield return new WaitForSeconds(3f);
-        yesButton.interactable = true;
-        noButton.interactable = true;
-        yesButton.Select();
     }
 }

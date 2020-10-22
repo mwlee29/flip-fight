@@ -146,6 +146,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGrounded: 0
+  endTheGame:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1996451006054111790, guid: 13d516fe8bda7784a8a9cfe71278a185,
+          type: 3}
+        m_MethodName: ResetLevel
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &3751101005915392498
 MonoBehaviour:
   m_ObjectHideFlags: 0

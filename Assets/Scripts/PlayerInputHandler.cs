@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.InputSystem;
@@ -16,6 +17,8 @@ public class PlayerInputHandler : MonoBehaviour
 
     private PlayerControls controls;
 
+    private bool movementEnabled = false;
+
     private void Awake()
     {
         movement = GetComponent<PlayerMovement>();
@@ -26,19 +29,22 @@ public class PlayerInputHandler : MonoBehaviour
     {
         playerConfig = pc;
         playerConfig.Input.onActionTriggered += Input_onActionTriggered;
+        StartCoroutine(StartGame());
     }
 
     private void Input_onActionTriggered(CallbackContext obj)
     {
+        if (movementEnabled != true) { return; }
+
         if (obj.action.name == controls.Player.Movement.name)
         {
             OnMove(obj);
         }
-        if (obj.action.name == controls.Player.Jump.name)
+        else if (obj.action.name == controls.Player.Jump.name)
         {
             OnJump(obj);
         }
-        if (obj.action.name == controls.Player.Flip.name)
+        else if (obj.action.name == controls.Player.Flip.name)
         {
             OnFlip(obj);
         }
@@ -60,5 +66,11 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if (movement != null && context.performed)
             movement.Flip();
+    }
+
+    IEnumerator StartGame()
+    {
+        yield return new WaitForSeconds(1.5f);
+        movementEnabled = true;
     }
 }

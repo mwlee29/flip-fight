@@ -1,22 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.Events;
+using UnityEngine.InputSystem;
+
+[Serializable]
+public class WinEvent : UnityEvent<PlayerConfiguration> { }
 
 public class Player : MonoBehaviour
 {
     public bool isGrounded = true;
 
+    //Testing UnityEvents, currently a WIP
+    public WinEvent endTheGame;
+
     BoxCollider2D triggerBox;
-    SpriteRenderer sr;
 
     PlayerConfiguration playerConfig;
 
     private void Start()
     {
-        sr = GetComponent<SpriteRenderer>();
         triggerBox = transform.GetComponent<BoxCollider2D>();
-
     }
 
     public void InitializePlayer(PlayerConfiguration pc)
@@ -32,6 +35,8 @@ public class Player : MonoBehaviour
         }
     }
 
+    //EnemyCheck is used to detect other players when flipping,
+    //called from the PlayerMovement script
     public void EnemyCheck(Vector2 pos)
     {
         Vector2 size = transform.lossyScale * triggerBox.size;
@@ -42,8 +47,7 @@ public class Player : MonoBehaviour
         {
             Debug.Log("ObjName = " + intersecting.gameObject.name);
             Destroy(intersecting.gameObject);
-            var lc = FindObjectOfType<LevelController>();
-            lc.ResetLevel(playerConfig.PlayerIndex);
+            endTheGame.Invoke(playerConfig);
         }
     }
 }
