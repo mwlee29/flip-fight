@@ -2,6 +2,8 @@
 
 Welcome to my Flip Fight page!
 
+![Flip Fight - Preview](Demo.gif)
+
 Code that I have written can be found in Assests/Scripts.
 
 This project is still a work in progress, so any bugs or incomplete code is actively being worked on.
